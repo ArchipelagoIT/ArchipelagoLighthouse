@@ -1,0 +1,18 @@
+# gitleaks config: default rules, plus folders that are never committed (build output, tools).
+# `make security` scans all commits, uncommitted changes, and new files that are not gitignored.
+# Gitignored files (a developer's real .env) are skipped on purpose.
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Generated, downloaded or ignored folders"
+paths = [
+  '''(^|/)\.git/''',
+  '''(^|/)\.tools/''',
+  '''(^|/)node_modules/''',
+  '''(^|/)\.next/''',
+  '''(^|/)\.dart_tool/''',
+  '''(^|/)build/''',
+  '''(^|/)\.terraform/''',
+  '''(^|/)(coverage|playwright-report|test-results)/''',
+]

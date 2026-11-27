@@ -1,0 +1,54 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # tools/go.mod may need a newer Go than backend/go.mod; let Go fetch it (verified by checksum).
+      GOTOOLCHAIN: auto
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # gitleaks scans the full history
+
+      # Always needed: pinned dev tools (gitleaks, osv-scanner, ...) are built from tools/go.mod.
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: ${{ hashFiles('backend/go.mod') != '' && 'backend/go.mod' || 'tools/go.mod' }}
+          cache-dependency-path: |
+            tools/go.sum
+            tools/golangci-lint/go.sum
+            backend/go.sum
+
+      - if: hashFiles('web/package.json') != ''
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        with:
+          package_json_file: web/package.json
+
+      - if: hashFiles('web/package.json') != ''
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: lts/*
+
+      - if: hashFiles('mobile/pubspec.yaml') != ''
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          channel: stable
+
+      - run: make setup
+      - run: make check
+      - if: hashFiles('backend/go.mod') != ''
+        run: make test-int

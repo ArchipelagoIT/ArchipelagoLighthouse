@@ -1,0 +1,40 @@
+openapi: 3.1.0
+info:
+  title: "[Project name] API"
+  version: 1.0.0
+servers:
+  - url: /v1
+paths:
+  /healthz:
+    get:
+      operationId: getHealth
+      summary: Process is alive
+      security: []
+      responses:
+        "200":
+          description: OK
+components:
+  securitySchemes:
+    session:
+      type: apiKey
+      in: cookie
+      name: session
+  schemas:
+    Money:
+      type: object
+      required: [amountMinor, currency]
+      properties:
+        amountMinor: { type: integer, format: int64 }
+        currency: { type: string, pattern: "^[A-Z]{3}$" }
+    Problem:
+      type: object
+      required: [type, title, status]
+      properties:
+        type: { type: string }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        instance: { type: string }
+        code: { type: string }
+security:
+  - session: []

@@ -1,0 +1,10 @@
+# Tier 3+ areas need approval from a named senior reviewer.
+# Replace @owner with real GitHub users or teams.
+*                          @owner
+/.claude/                  @owner
+/backend/db/migrations/    @owner
+/backend/internal/auth/    @owner
+/backend/internal/money/   @owner
+/api/                      @owner
+/infra/                    @owner
+/.github/                  @owner

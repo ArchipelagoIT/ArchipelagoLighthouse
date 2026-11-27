@@ -1,0 +1,12 @@
+# Accepted vulnerabilities in DEV TOOL dependencies only (tools/go.mod).
+# These tools run on developer machines and CI against our own files; they are not shipped.
+# Every entry needs a reason and an expiry date. When it expires, osv-scanner fails again:
+# re-check upstream, then upgrade (go -C tools get <module>@<fixed>) or renew with a new reason.
+# This file applies to tools/go.mod only. tools/golangci-lint/ needs its own osv-scanner.toml
+# if it ever needs an exception.
+
+[[IgnoredVulns]]
+id = "GO-2026-5932"
+ignoreUntil = 2026-12-05T00:00:00Z
+reason = """golang.org/x/crypto/openpgp is unmaintained (advisory, no stable fix: only an
+unreleased pseudo-version). Pulled in by a dev tool, not by app code. Added 2026-11-05."""

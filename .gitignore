@@ -1,0 +1,28 @@
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.jks
+*.keystore
+mobile/android/key.properties
+
+# Claude Code personal files
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Build output
+web/.next/
+web/node_modules/
+mobile/build/
+mobile/.dart_tool/
+backend/bin/
+.tools/
+coverage/
+playwright-report/
+test-results/
+infra/**/.terraform/
+*.tfstate
+*.tfstate.*
+.DS_Store
