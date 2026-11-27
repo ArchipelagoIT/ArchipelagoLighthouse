@@ -1,6 +1,6 @@
-# [Project name]
+# Archipelago Lighthouse
 
-[One sentence: what this app does and for whom.]
+[One place to view every Archipelago hotel CCTV camera, live or recorded.]
 
 ## Start a new project from this template
 1. Copy this folder, rename it, then `git init`.
